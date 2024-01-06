@@ -26,9 +26,6 @@ namespace mstr {
         // move constructor
         unique_pointer(unique_pointer&& other) noexcept
         {
-            if(this == other)
-                return *this;
-
             this->pointer_ = other.pointer_;
             other.pointer_ = nullptr;
 

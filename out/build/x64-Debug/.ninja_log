@@ -1,0 +1,6 @@
+# ninja log v5
+4	322	7260912666771242	CMakeFiles/string.dir/src/string/m_string.cpp.obj	5abee5df6b192649
+1	595	7260912669477951	CMakeFiles/string.dir/src/main.cpp.obj	ccaae0e7a45a6b7d
+9	334	7260949166836191	CMakeFiles/m_string.dir/src/string/m_string.cpp.obj	dc7925dbc6ffac3b
+9	329	7260934115900310	CMakeFiles/m_string.dir/src/main.cpp.obj	8aae9e66f764a3d9
+334	451	7260949167684824	m_string.exe	ec78d9ce8c9c3d08
