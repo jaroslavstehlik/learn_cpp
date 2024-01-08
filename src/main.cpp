@@ -2,9 +2,19 @@
 #include <memory>
 
 #include "unique_pointer.h"
-#include "string/m_string.h";
+#include "string/m_string.h"
+#include "shared_pointer.h"
+
+void TestSharedPointer() {
+    std::cout << "TestSharedPointer" << std::endl;
+    mstr::shared_pointer<float> shared_pointer_a(mstr::shared_pointer<float>(new float(5.f)));
+    mstr::shared_pointer<float> shared_pointer_b(shared_pointer_a);
+    mstr::shared_pointer<float> shared_pointer_c(mstr::shared_pointer<float>(new float(5.f)));
+    shared_pointer_c = shared_pointer_b;
+}
 
 void TestUniquePointer() {
+    std::cout << "TestUniquePointer" << std::endl;
     mstr::unique_pointer<float> my_pointer = mstr::unique_pointer<float>(new float(3));
     std::cout << my_pointer.Get() << std::endl;
     my_pointer.Reset(nullptr);
@@ -14,6 +24,7 @@ void TestUniquePointer() {
 }
 
 void TestString() {
+    std::cout << "TestString" << std::endl;
     string original_string("prdelka");
     std::cout << original_string.c_string() << std::endl;
 
@@ -47,6 +58,7 @@ void TestString() {
 int main() {
 
     TestUniquePointer();
+    TestSharedPointer();
     TestString();
 
     return 0;

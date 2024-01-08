@@ -2,9 +2,6 @@
 // Created by Jaroslav Stehlik on 06.01.2024.
 //
 
-#ifndef BASICS_UNIQUE_POINTER_H
-#define BASICS_UNIQUE_POINTER_H
-
 namespace mstr {
 
     template<typename T>
@@ -33,8 +30,7 @@ namespace mstr {
         }
 
         // move assignment operator
-        unique_pointer& operator=(unique_pointer&& other) noexcept
-        {
+        unique_pointer& operator=(unique_pointer&& other) noexcept {
             if(this == other)
                 return *this;
 
@@ -58,7 +54,7 @@ namespace mstr {
             std::cout << this << ", Reset unique pointer" << std::endl;
         }
 
-        ~unique_pointer<T>() {
+        ~unique_pointer() {
             delete pointer_;
             pointer_ = nullptr;
 
@@ -66,5 +62,3 @@ namespace mstr {
         }
     };
 } // mstr
-
-#endif //BASICS_UNIQUE_POINTER_H
