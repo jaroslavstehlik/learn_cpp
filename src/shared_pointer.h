@@ -22,14 +22,25 @@ namespace mstr {
         }
 
         void IncrementReferenceCounter() {
+            if(!reference_counter_)
+                reference_counter_ = new int(0);
             (*reference_counter_)++;
         }
 
         void DecrementReferenceCounter() {
+            if(!reference_counter_ ||
+                *reference_counter_ == 0)
+                return;
+
             (*reference_counter_)--;
+            if(*reference_counter_ == 0)
+                this->Clear();
         }
 
         int ReferenceCount() {
+            if(!reference_counter_)
+                return 0;
+
             return (*reference_counter_);
         }
 
@@ -61,11 +72,7 @@ namespace mstr {
                 return *this;
 
             if(this->reference_counter_ != other.reference_counter_) {
-                // decrement reference counter
                 this->DecrementReferenceCounter();
-                // delete reference counter and pointer when no references exist
-                if(this->ReferenceCount() <= 0)
-                    this->Clear();
             }
 
             this->reference_counter_ = other.reference_counter_;
@@ -110,13 +117,22 @@ namespace mstr {
             return pointer_;
         }
 
+        void Reset(T* pointer) {
+            if(this->pointer_ == pointer)
+                return;
+
+            this->DecrementReferenceCounter();
+
+            if(pointer)
+            {
+                this->pointer_ = pointer;
+                this->IncrementReferenceCounter();
+            }
+        }
+
         ~shared_pointer() {
             // decrement reference counter
-            DecrementReferenceCounter();
-
-            // delete reference counter and pointer when no references exist
-            if(ReferenceCount() <= 0)
-                Clear();
+            this->DecrementReferenceCounter();
         }
     };
 }

@@ -56,10 +56,8 @@ void TestString() {
 }
 
 int main() {
-
     TestUniquePointer();
     TestSharedPointer();
     TestString();
-
     return 0;
 }
