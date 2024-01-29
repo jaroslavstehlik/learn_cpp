@@ -23,9 +23,7 @@ namespace mstr {
         // move constructor
         unique_pointer(unique_pointer&& other) noexcept
         {
-            this->pointer_ = other.pointer_;
-            other.pointer_ = nullptr;
-
+            this->pointer_ = other.Release();
             std::cout << "Moved unique pointer from: " << other << ", to: " << this << std::endl;
         }
 
@@ -34,10 +32,12 @@ namespace mstr {
             if(this == other)
                 return *this;
 
-            this->pointer_ = other.pointer_;
-            other.pointer_ = nullptr;
-
+            this->pointer_ = other.Release();
             std::cout << "Moved unique pointer from: " << other << ", to: " << this << std::endl;
+        }
+
+        explicit operator bool() const noexcept {
+            return pointer_ != nullptr;
         }
 
         const T* Get() const {
@@ -54,10 +54,18 @@ namespace mstr {
             std::cout << this << ", Reset unique pointer" << std::endl;
         }
 
-        ~unique_pointer() {
-            delete pointer_;
-            pointer_ = nullptr;
+        void Reset() {
+            Reset(nullptr);
+        }
 
+        const T* Release() {
+            T* output = pointer_;
+            Reset();
+            return output;
+        }
+
+        ~unique_pointer() {
+            Reset();
             std::cout << this << ", Destructed unique pointer" << std::endl;
         }
     };

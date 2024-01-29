@@ -52,7 +52,6 @@ namespace mstr {
                 reference_counter_ = new int();
 
             IncrementReferenceCounter();
-
             std::cout << this << ", constructed reference counter, reference count:" << ReferenceCount() << std::endl;
         }
 
@@ -62,7 +61,6 @@ namespace mstr {
             this->pointer_ = other.pointer_;
 
             IncrementReferenceCounter();
-
             std::cout << this << ", constructed reference counter via copy constructor, reference count:" << ReferenceCount() << std::endl;
         }
 
@@ -78,22 +76,19 @@ namespace mstr {
             this->reference_counter_ = other.reference_counter_;
             this->pointer_ = other.pointer_;
 
-            (*this->reference_counter_)++;
-
+            this->IncrementReferenceCounter();
             std::cout << this << ", copied reference counter via copy assigment, reference count:" << ReferenceCount() << std::endl;
 
             return *this;
         }
 
         // move constructor
-        shared_pointer(shared_pointer&& other)  noexcept {
+        shared_pointer(shared_pointer&& other) noexcept {
             this->reference_counter_ = other.reference_counter_;
             this->pointer_ = other.pointer_;
 
             // invalidate other
-            other.reference_counter_ = nullptr;
-            other.pointer_ = nullptr;
-
+            other.Reset();
             std::cout << this << ", moved reference counter via move constructor, reference count:" << ReferenceCount() << std::endl;
         }
 
@@ -113,6 +108,10 @@ namespace mstr {
             return *this;
         }
 
+        explicit operator bool() const noexcept {
+            return pointer_ != nullptr;
+        }
+
         const T* Get() const {
             return pointer_;
         }
@@ -128,6 +127,10 @@ namespace mstr {
                 this->pointer_ = pointer;
                 this->IncrementReferenceCounter();
             }
+        }
+
+        void Reset() {
+            Reset(nullptr);
         }
 
         ~shared_pointer() {
