@@ -2,8 +2,9 @@
 #include <memory>
 
 #include "unique_pointer.h"
-#include "string/m_string.h"
 #include "shared_pointer.h"
+#include "vector.h"
+#include "string/m_string.h"
 
 void TestSharedPointer() {
     std::cout << "TestSharedPointer" << std::endl;
@@ -21,6 +22,14 @@ void TestUniquePointer() {
     std::cout << my_pointer.Get() << std::endl;
     my_pointer.Reset(new float(5));
     std::cout << my_pointer.Get() << std::endl;
+}
+
+void TestVector() {
+    mstr::vector<int> vector_a{};
+    mstr::vector<int> vector_b(10);
+    mstr::vector<int> vector_c(10, 5);
+    mstr::vector<int> vector_d(vector_a);
+    vector_c = vector_b;
 }
 
 void TestString() {
@@ -58,6 +67,7 @@ void TestString() {
 int main() {
     TestUniquePointer();
     TestSharedPointer();
+    TestVector();
     TestString();
     return 0;
 }

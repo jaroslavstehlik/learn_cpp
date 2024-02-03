@@ -14,7 +14,8 @@ string::string(const char* value) {
 }
 
 string::~string() {
-    std::cout << this << ", destruct string: " << string_array_ << std::endl;
+    if(string_array_)    
+        std::cout << this << ", destruct string: " << string_array_ << std::endl;
 
     delete[] string_array_;
     string_array_ = nullptr;
