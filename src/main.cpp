@@ -24,12 +24,37 @@ void TestUniquePointer() {
     std::cout << my_pointer.Get() << std::endl;
 }
 
+void PrintVector(const char* name, const mstr::vector<int>& vector) {
+    std::string output{};
+    for(int i = 0; i < vector.size(); i++)
+    {
+        output += std::to_string(vector[i]);
+        output += ",";
+    }
+    std::cout << name << ": " << output << std::endl;
+}
+
 void TestVector() {
-    mstr::vector<int> vector_a{};
-    mstr::vector<int> vector_b(10);
-    mstr::vector<int> vector_c(10, 5);
-    mstr::vector<int> vector_d(vector_a);
-    vector_c = vector_b;
+    mstr::vector<int> vector_empty{};
+    PrintVector("vector_empty", vector_empty);
+
+    mstr::vector<int> vector_uninitialized(10);
+    PrintVector("vector_uninitialized", vector_uninitialized);
+
+    mstr::vector<int> vector_initialized(10, 5);
+    PrintVector("vector_initialized", vector_initialized);
+
+    mstr::vector<int> vector_copied(vector_empty);
+    PrintVector("vector_copied", vector_copied);
+
+    vector_uninitialized = vector_initialized;
+    PrintVector("vector_uninitialized", vector_uninitialized);
+
+    vector_uninitialized.push_back(1);
+    vector_uninitialized.push_back(2);
+    vector_uninitialized.push_back(3);
+    vector_uninitialized.push_back(4);
+    PrintVector("vector_pushed_back", vector_uninitialized);
 }
 
 void TestString() {
