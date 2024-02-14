@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 
 //
 // Created by Jaroslav Stehlik on 12.02.2024.

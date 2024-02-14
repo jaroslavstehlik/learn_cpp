@@ -1,6 +1,4 @@
 #include <iostream>
-#include <memory>
-
 #include "unique_pointer.h"
 #include "shared_pointer.h"
 #include "vector.h"
