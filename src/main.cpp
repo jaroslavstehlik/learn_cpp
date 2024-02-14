@@ -3,7 +3,7 @@
 #include "shared_pointer.h"
 #include "vector.h"
 #include "string/m_string.h"
-#include "test.h"
+#include <gtest/gtest.h>
 
 void TestSharedPointer() {
     std::cout << "TestSharedPointer" << std::endl;
@@ -33,27 +33,31 @@ void PrintVector(const char* name, const mstr::vector<int>& vector) {
     std::cout << name << ": " << output << std::endl;
 }
 
-void TestVector() {
+TEST(HelloTest, TestVector) {
     mstr::vector<int> vector_empty{};
-    PrintVector("vector_empty", vector_empty);
+    ASSERT_EQ(vector_empty.size(), 0);
 
     mstr::vector<int> vector_uninitialized(10);
-    PrintVector("vector_uninitialized", vector_uninitialized);
+    ASSERT_EQ(vector_uninitialized.size(), 10);
 
     mstr::vector<int> vector_initialized(10, 5);
-    PrintVector("vector_initialized", vector_initialized);
+    ASSERT_EQ(vector_initialized.size(), 10);
+    for(int i = 0; i < 10; i++) {
+        ASSERT_EQ(vector_initialized[i], 5);
+    }
 
-    mstr::vector<int> vector_copied(vector_empty);
-    PrintVector("vector_copied", vector_copied);
+    mstr::vector<int> vector_push{};
+    for(int i = 0; i < 10; i++) {
+        vector_push.push_back(i);
+        ASSERT_EQ(vector_push[i], i);
+    }
+    ASSERT_EQ(vector_push.size(), 10);
 
-    vector_uninitialized = vector_initialized;
-    PrintVector("vector_uninitialized", vector_uninitialized);
-
-    vector_uninitialized.push_back(1);
-    vector_uninitialized.push_back(2);
-    vector_uninitialized.push_back(3);
-    vector_uninitialized.push_back(4);
-    PrintVector("vector_pushed_back", vector_uninitialized);
+    for(int i = 9; i > -1; i--) {
+        ASSERT_EQ(vector_push.back(), i);
+        vector_push.pop_back();
+    }
+    ASSERT_EQ(vector_push.size(), 0);
 }
 
 void TestString() {
@@ -86,14 +90,4 @@ void TestString() {
     else {
         std::cout << "moving failed" << std::endl;
     }
-}
-
-int main() {
-    TestUniquePointer();
-    TestSharedPointer();
-    TestVector();
-    TestString();
-
-    TestMain();
-    return 0;
 }
