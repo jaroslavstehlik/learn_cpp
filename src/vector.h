@@ -1,3 +1,5 @@
+#pragma once
+
 //
 // Created by Jaroslav Stehlik on 06.01.2024.
 //

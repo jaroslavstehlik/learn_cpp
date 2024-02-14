@@ -5,6 +5,7 @@
 #include "shared_pointer.h"
 #include "vector.h"
 #include "string/m_string.h"
+#include "test.h"
 
 void TestSharedPointer() {
     std::cout << "TestSharedPointer" << std::endl;
@@ -94,5 +95,7 @@ int main() {
     TestSharedPointer();
     TestVector();
     TestString();
+
+    TestMain();
     return 0;
 }
