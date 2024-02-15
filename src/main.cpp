@@ -5,32 +5,86 @@
 #include "string/m_string.h"
 #include <gtest/gtest.h>
 
-void TestSharedPointer() {
-    std::cout << "TestSharedPointer" << std::endl;
+TEST(HelloTest, TestSharedPointer) {
     mstr::shared_pointer<float> shared_pointer_a(mstr::shared_pointer<float>(new float(5.f)));
+    ASSERT_TRUE(shared_pointer_a);
+    ASSERT_NE(shared_pointer_a.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_a.Get(), 5.f);
+    ASSERT_EQ(shared_pointer_a.ReferenceCount(), 1);
+
+    // copy constructor
     mstr::shared_pointer<float> shared_pointer_b(shared_pointer_a);
-    mstr::shared_pointer<float> shared_pointer_c(mstr::shared_pointer<float>(new float(5.f)));
+    ASSERT_TRUE(shared_pointer_a);
+    ASSERT_NE(shared_pointer_a.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_a.Get(), 5.f);
+    ASSERT_EQ(shared_pointer_a.ReferenceCount(), 2);
+
+    ASSERT_TRUE(shared_pointer_b);
+    ASSERT_NE(shared_pointer_b.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_b.Get(), 5.f);
+    ASSERT_EQ(shared_pointer_b.ReferenceCount(), 2);
+    ASSERT_EQ(shared_pointer_a.ReferenceCount(), shared_pointer_b.ReferenceCount());
+
+    mstr::shared_pointer<float> shared_pointer_c(mstr::shared_pointer<float>(new float(3.f)));
+    ASSERT_TRUE(shared_pointer_c);
+    ASSERT_NE(shared_pointer_c.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_c.Get(), 3.f);
+    ASSERT_EQ(shared_pointer_c.ReferenceCount(), 1);
+
+    // copy assignment
     shared_pointer_c = shared_pointer_b;
+    ASSERT_TRUE(shared_pointer_b);
+    ASSERT_NE(shared_pointer_b.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_b.Get(), 5.f);
+    ASSERT_EQ(shared_pointer_b.ReferenceCount(), 3);
+
+    ASSERT_TRUE(shared_pointer_c);
+    ASSERT_NE(shared_pointer_c.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_c.Get(), 5.f);
+    ASSERT_EQ(shared_pointer_c.ReferenceCount(), 3);
+
+    // Reset c
+    shared_pointer_c.Reset();
+    std::cout << shared_pointer_c.Get() << std::endl;
+    ASSERT_FALSE(shared_pointer_c);
+    ASSERT_EQ(shared_pointer_c.Get(), nullptr);
+    ASSERT_EQ(shared_pointer_c.ReferenceCount(), 0);
+
+    ASSERT_TRUE(shared_pointer_b);
+    ASSERT_NE(shared_pointer_b.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_b.Get(), 5.f);
+    ASSERT_EQ(shared_pointer_b.ReferenceCount(), 2);
+
+    // Reset b
+    shared_pointer_b.Reset();
+    ASSERT_TRUE(shared_pointer_a);
+    ASSERT_NE(shared_pointer_a.Get(), nullptr);
+    ASSERT_EQ(*shared_pointer_a.Get(), 5.f);
+    ASSERT_EQ(shared_pointer_a.ReferenceCount(), 1);
+
+    // Reset a
+    shared_pointer_a.Reset();
+    ASSERT_FALSE(shared_pointer_a);
+    ASSERT_EQ(shared_pointer_a.Get(), nullptr);
+    ASSERT_EQ(shared_pointer_a.ReferenceCount(), 0);
 }
 
-void TestUniquePointer() {
-    std::cout << "TestUniquePointer" << std::endl;
-    mstr::unique_pointer<float> my_pointer = mstr::unique_pointer<float>(new float(3));
-    std::cout << my_pointer.Get() << std::endl;
+TEST(HelloTest, TestUniquePointer) {
+    mstr::unique_pointer<float> my_pointer = mstr::unique_pointer<float>(new float(3.f));
+    ASSERT_TRUE(my_pointer);
+    ASSERT_NE(my_pointer.Get(), nullptr);
+    ASSERT_EQ(*my_pointer.Get(), 3.f);
+    ASSERT_NE(*my_pointer.Get(), 1.f);
+
     my_pointer.Reset(nullptr);
-    std::cout << my_pointer.Get() << std::endl;
-    my_pointer.Reset(new float(5));
-    std::cout << my_pointer.Get() << std::endl;
-}
+    ASSERT_FALSE(my_pointer);
+    ASSERT_EQ(my_pointer.Get(), nullptr);
 
-void PrintVector(const char* name, const mstr::vector<int>& vector) {
-    std::string output{};
-    for(int i = 0; i < vector.size(); i++)
-    {
-        output += std::to_string(vector[i]);
-        output += ",";
-    }
-    std::cout << name << ": " << output << std::endl;
+    my_pointer.Reset(new float (5.f));
+    ASSERT_TRUE(my_pointer);
+    ASSERT_NE(my_pointer.Get(), nullptr);
+    ASSERT_EQ(*my_pointer.Get(), 5.f);
+    ASSERT_NE(*my_pointer.Get(), 1.f);
 }
 
 TEST(HelloTest, TestVector) {

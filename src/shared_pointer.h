@@ -38,7 +38,7 @@ namespace mstr {
             if(*reference_counter_ == 0)
                 this->Clear();
         }
-
+    public:
         int ReferenceCount() {
             if(!reference_counter_)
                 return 0;
@@ -46,7 +46,6 @@ namespace mstr {
             return (*reference_counter_);
         }
 
-    public:
         explicit shared_pointer(T* pointer) {
             pointer_ = pointer;
 
@@ -123,11 +122,12 @@ namespace mstr {
                 return;
 
             this->DecrementReferenceCounter();
+            reference_counter_ = nullptr;
+            this->pointer_ = pointer;
 
-            if(pointer)
-            {
-                this->pointer_ = pointer;
-                this->IncrementReferenceCounter();
+            if(this->pointer_) {
+                reference_counter_ = new int();
+                IncrementReferenceCounter();
             }
         }
 
