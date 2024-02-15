@@ -15,7 +15,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # basics
-add_executable(basics "src/main.cpp" "src/unique_pointer.h" "src/vector.h" "src/string/m_string.h" "src/string/m_string.cpp"
+add_executable(basics "src/main.cpp" "src/unique_pointer.h" "src/vector.h"
         src/shared_pointer.h
         src/test.h)
 
